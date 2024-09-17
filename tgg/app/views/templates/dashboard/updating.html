@@ -1,0 +1,52 @@
+{% extends "dashboard/dashboard.html" %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block title %}
+      <title>Actualizar Tableros</title>
+  {% endblock title %}
+  
+</head>
+
+<body>
+      {% block main %}
+          <div class="container-fluid">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4"></div>
+                  
+                  <div class="col-md-4">
+                      <h5 class="card-title fw-semibold mb-4">Actualizar Tableros</h5>                    
+                      <img src="{{ url_for('static', path='images/logos/logo_1.jpg') }}" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Actualiza los tableros</h5>
+                        <p class="card-text mt-4">"¡Actualiza tus tableros con un solo click! y mantén toda tu información actualizada.<p>
+                      
+                        <form action="/updating" method="POST">
+                        <button type="submit" class=" btn btn-primary py-2 mt-4" style="padding:35%" >Actualizar</button>
+                        </form>
+
+                  </div>
+
+                  <div class="col-md-4"></div>
+                </div>
+                {% if flash_message %}
+                      <div class="alert alert-{{ flash_message.category }} mt-5" role="alert">
+                        {{ flash_message.message }}
+                      </div>
+              {% endif %}
+              </div>
+            </div>
+          </div>
+      {% endblock main %}
+      
+      {% block js_extra %}
+      {% endblock js_extra %}
+</body>
+
+</html>

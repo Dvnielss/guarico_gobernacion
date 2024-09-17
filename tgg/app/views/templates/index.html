@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block title %}
+    <title>Alcaravan TGG</title>
+  {% endblock title %}
+  {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.min.css') }}">
+    {% block css_extra %}{% endblock css_extra %}
+  {% endblock css %}
+</head>
+
+<body>
+  {% block content %}
+
+  
+  {% endblock content %}
+
+  {% block js %}
+
+    {% block js_extra %}{% endblock js_extra %}
+    
+  {% endblock js %}
+  
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+{% extends "dashboard/dashboard.html" %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block title %}
+      <title>Manejo de los CronJobs</title>
+  {% endblock title %}
+  
+</head>
+
+<body>
+      {% block main %}
+          <div class="container-fluid">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <h5 class="card-title fw-semibold mb-4">Control del Cronjobs</h5>
+                  <div class="col-md-2">
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="card">
+                      <img src="{{ url_for('static', path='images/etc/Clock.png') }}" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Activar/Desactivar</h5>
+                        <p class="card-text mt-4">"Controla tus Cronjobs con un Clic: Activa y Desactiva Fácilmente!"</p>
+                        <div class="row">
+                          {% if cron_status %}
+                          <form action="/cron/deactivated" method="POST">
+                            <button type="submit" class="btn btn-danger py-2 mt-4">Desactivar</button>
+                          </form>
+                          {% else %}
+                          <form action="/cron/activated" method="POST">
+                            <button type="submit" class="btn btn-success py-2 mt-4">Activar Cron</button>
+                          </form>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+
+
+                <div class="col-md-4">
+                    <div class="card">
+                      <div class="text-center">
+                      <img src="{{ url_for('static', path='images/etc/change_clock.png') }}" alt="..." width="175px">
+                    </div>
+
+                      <div class="card-body">
+                        <h5 class="card-title">Configurar Tiempo</h5>
+
+                          <form action="/cron/updating" method="POST">
+                            <div class="mt-4 mb-3">
+                              <input type="text"
+                                class="form-control" name="time" placeholder="Tiempo en minutos">
+                            </div>
+                            <button type="submit" class="btn btn-info py-2 mt-4">Cambiar Tiempo</button>
+                          </form>
+                        
+                        </div>
+                      </div>
+
+                      <!-- Contenido de la segunda card -->
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="col-md-2">
+                </div>
+
+                {% if flash_message %}
+                      <div class="alert alert-{{ flash_message.category }} mt-2" role="alert">
+                        {{ flash_message.message }}
+                      </div>
+              {% endif %}
+              </div>
+            </div>
+          </div>
+      {% endblock main %}
+      
+      {% block js_extra %}
+      {% endblock js_extra %}
+</body>
+
+</html>

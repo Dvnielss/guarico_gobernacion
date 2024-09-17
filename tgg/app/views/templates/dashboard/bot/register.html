@@ -1,0 +1,61 @@
+{% extends 'dashboard/dashboard.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {% block title %}
+    <title>Registro</title>
+    {% endblock title %}
+
+
+
+  </head>
+
+  <body>
+
+    {% block main %}
+    <div class="container-fluid">
+      <div class="card">
+        
+        <div class="card-body">
+          
+          <div class="row mb-5">
+
+            <div class="col-md-4">
+              <a class="btn btn-success" href="/bot"><</a>
+            </div>
+
+            <div class="col-md-4 mt-5">
+
+                <h5 class="card-title fw-semibold mb-4">Registrar usuario</h5>
+
+                <form action="/bot/register" method="POST">
+                  <div class="mb-3">
+                    <label for="id_telegram" class="form-label">Id de telegram</label>
+                    <input type="text" class="form-control" id="id_telegram" name="id_telegram" aria-describedby="emailHelp" placeholder="Id de telegram">
+                  </div>
+                  
+                  <button type="submit" class="btn btn-block btn-primary">Registrar</button>
+                </form>
+                {% if flash_message %}
+                  <div class="alert alert-{{ flash_message.category }} mt-5" role="alert">
+                    {{ flash_message.message }}
+                  </div>
+                {% endif %}
+
+            </div>
+
+            <div class="col-md-4"></div>
+          
+
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endblock main %} 
+
+    {% block js_extra %}
+    {% endblock js_extra %}
+  </body>
+</html>

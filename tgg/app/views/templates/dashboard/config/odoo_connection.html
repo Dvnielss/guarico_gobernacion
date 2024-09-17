@@ -1,0 +1,194 @@
+{% extends "dashboard/dashboard.html" %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block title %}
+      <title>Coneccion a odoo</title>
+  {% endblock title %}
+  
+</head>
+
+<body>
+  {% block main %}
+          <div class="container-fluid">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4"></div>
+                  
+                  <div class="col-md-4">
+                    <h5 class="card-title fw-semibold mb-4">Actualizar Datos</h5>
+                    <div id="content" >
+                    </div>
+                    {% if flash_message %}
+                      <div class="alert alert-{{ flash_message.category }} mt-5" role="alert">
+                        {{ flash_message.message }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  
+
+                <div class="col-md-4"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+    {% endblock main %}
+    
+    {% block js_extra %}
+          <script>
+            // Obtener el elemento del div de contenido
+              const contentDiv = document.getElementById('content');
+
+              // Crear una función para cargar los nuevos inputs de la parte 1
+              function part1() {
+                // Eliminar los elementos existentes en el div de contenido
+                contentDiv.innerHTML = '';
+
+                // Crear los nuevos inputs de la parte 1
+                const nuevosInputs = document.createElement('div');
+                nuevosInputs.innerHTML = `
+                  <div class="mb-3">
+                    <label for="host" class="form-label">Host</label>
+                    <input type="text" class="form-control" id="host"  placeholder="Host">
+                    <small id="hostError" class="text-danger"></small>
+                  </div>
+                  <div class="mb-3">
+                    <label for="port" class="form-label">Port</label>
+                    <input type="text" class="form-control" id="port"  placeholder="Puerto">
+                    <small id="portError" class="text-danger"></small>
+                  </div>
+                  <div class="mb-3">
+                    <label for="protocolo" class="form-label">Protocolo</label>
+                    <input type="text" class="form-control" id="protocolo" placeholder="Protocolo">
+                    <small id="protocoloError" class="text-danger"></small>
+                  </div>
+                  <button class="btn btn-block btn-primary" onclick="guardarDatos()">Siguiente</button>
+                `;
+
+                // Agregar los nuevos inputs al div de contenido
+                contentDiv.appendChild(nuevosInputs);
+              }
+
+              // Crear una función para validar los datos ingresados
+              function validarDatos() {
+                const hostInput = document.getElementById('host');
+                const portInput = document.getElementById('port');
+                const protocoloInput = document.getElementById('protocolo');
+                const hostError = document.getElementById('hostError');
+                const portError = document.getElementById('portError');
+                const protocoloError = document.getElementById('protocoloError');
+
+                let valid = true;
+
+                // Validar campo host
+                if (hostInput.value.trim() === '') {
+                  hostError.textContent = 'El campo Host no puede estar vacío';
+                  valid = false;
+                } else {
+                  hostError.textContent = '';
+                }
+
+                // Validar campo puerto
+                const portValue = parseInt(portInput.value);
+                if (isNaN(portValue) || portValue < 1 || portValue > 6553500) {
+                  portError.textContent = 'El campo Puerto debe ser un número entero';
+                  valid = false;
+                } else {
+                  portError.textContent = '';
+                }
+
+                // Validar campo protocolo
+                if (protocoloInput.value.trim() === '') {
+                  protocoloError.textContent = 'El campo Protocolo no puede estar vacío';
+                  valid = false;
+                } else {
+                  protocoloError.textContent = '';
+                }
+
+                return valid;
+              }
+
+              // Crear una función para guardar los datos de los inputs y mostrar la parte 2
+              function guardarDatos() {
+                if (!validarDatos()) {
+                  return;
+                }
+
+                // Obtener los valores de los inputs de la parte 1
+                const host = document.getElementById('host').value;
+                const port = document.getElementById('port').value;
+                const protocolo = document.getElementById('protocolo').value;
+
+                // Eliminar los elementos existentes en el div de contenido
+                contentDiv.innerHTML = '';
+
+                // Crear los nuevos inputs de la parte 2
+                const nuevosInputs = document.createElement('div');
+                nuevosInputs.innerHTML = `
+                <form action="/odoo_conection" method="POST">
+                  <input type="hidden" name="host" value=${host}> 
+                  <input type="hidden" name="port" value=${port}> 
+                  <input type="hidden" name="protocol" value=${protocolo}> 
+                  <div class="mb-3">
+                    <label for="database" class="form-label">Data base</label>
+                    <input type="text" class="form-control" id="database" name="database"  placeholder="Database">
+                  </div>
+                  <div class="mb-3">
+                    <label for="username" class="form-label">Nombre de usuario</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                  </div>
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+                  `;
+
+                
+
+                // Agregar los nuevos inputs al div de contenido
+                contentDiv.appendChild(nuevosInputs);
+              }
+
+              // Crear una función para guardar los datos de la parte 2 y realizar el envío por POST
+              function guardarDatosParte2() {
+                // Obtener los valores de los inputs de la parte 2
+                const database = document.getElementById('database').value;
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                // Crear un objeto con los datos capturados
+                const datos = {
+                  host: database,
+                  port: username,
+                  protocolo: password
+                };
+
+                // Hacer una petición POST con los datos
+                fetch('/odoo_conection', {
+                  method: 'POST',
+                  body: JSON.stringify(datos),
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                }).then((response) => {
+                  console.log(response);
+                }).catch((error) => {
+                  console.error(error);
+                });
+              }
+
+              // Llamar a la función part1() para mostrar la parte 1 inicialmente
+              part1();
+
+          </script>
+    {% endblock js_extra %}
+</body>
+
+</html>

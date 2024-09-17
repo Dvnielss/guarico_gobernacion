@@ -1,0 +1,10 @@
+{
+    "model": "app.models.V1.users.User",
+    "data": [
+        {
+            "username": "admin",
+            "password": "$2b$12$8YBmJPhTgvwYli1Kaf6KueKaLyaHHvMCNGmrk5pzBILLppwQsi2vK",
+            "rol":"ADMIN"
+        }
+    ]
+}
