@@ -21,7 +21,7 @@ class EnvSettings(BaseSettings):
     
     # base de datos antigua de caracas
     #ODOO_HOST:str = "190.205.43.250"
-    ODOO_HOST:str = "190.205.119.210"
+    ODOO_HOST:str = "192.168.10.20" #"190.205.119.210" 
     ODOO_PORT:int = 8079
     ODOO_PROTOCOL :str = "jsonrpc"
 
